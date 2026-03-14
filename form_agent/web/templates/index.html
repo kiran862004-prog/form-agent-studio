@@ -7,15 +7,21 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
 </head>
 <body>
+  <div class="page-grid"></div>
   <div class="page-glow glow-one"></div>
   <div class="page-glow glow-two"></div>
+  <div class="page-glow glow-three"></div>
 
   <main class="shell">
     <section class="masthead">
       <div class="masthead-copy glass-panel hero-panel">
-        <p class="kicker">Field Research Console</p>
+        <div class="hero-badge-row">
+          <p class="kicker">Creative Ops Console</p>
+          <span class="floating-pill">Synthetic Research Engine</span>
+        </div>
+
         <h1>Form Agent Studio</h1>
-        <p class="lede">An expressive web cockpit for schema capture, synthetic respondent generation, export workflows, and read-only Google Form inspection for forms you own or are authorized to test.</p>
+        <p class="lede">A playful command deck for schema capture, synthetic respondent generation, export workflows, and read-only Google Form inspection. Built for curious operators, fast QA loops, and a little bit of dramatic flair.</p>
 
         <div class="status-row">
           <span class="status-pill">Listening on {{ network_host }}:{{ network_port }}</span>
@@ -30,10 +36,25 @@
           <strong>External access help</strong>
           <p>Use the credentials shared by the owner, start with the read-only inspector if you only need structure, and pull exports from the download dock once a run completes.</p>
         </div>
+
+        <div class="hero-mini-grid">
+          <div class="mini-card">
+            <span>Mode</span>
+            <strong>Studio + Lab</strong>
+          </div>
+          <div class="mini-card">
+            <span>Behavior</span>
+            <strong>Inspect, generate, export</strong>
+          </div>
+          <div class="mini-card">
+            <span>Output</span>
+            <strong>JSON, CSV, XLSX</strong>
+          </div>
+        </div>
       </div>
 
       <aside class="glass-panel side-panel">
-        <div class="side-block">
+        <div class="side-block neon-block">
           <span class="mini-label">Local demo</span>
           <a class="demo-link" href="{{ demo_url }}">{{ demo_url }}</a>
         </div>
@@ -44,9 +65,13 @@
         </div>
 
         <div class="side-block stat-orbit">
-          <span class="mini-label">Quick read</span>
-          <div class="orbit-core">Studio</div>
-          <p>Research, inspect, export, and audit from one place.</p>
+          <span class="mini-label">Signal core</span>
+          <div class="orbit-wrap">
+            <div class="orbit-ring ring-one"></div>
+            <div class="orbit-ring ring-two"></div>
+            <div class="orbit-core">Live</div>
+          </div>
+          <p>Research, inspect, export, and audit from one imaginative control room.</p>
         </div>
       </aside>
     </section>
@@ -54,8 +79,11 @@
     <section class="workspace-grid">
       <section class="glass-panel control-panel main-control">
         <div class="panel-topline">
-          <p class="kicker">Automation</p>
-          <h2>Generate And Test</h2>
+          <div>
+            <p class="kicker">Automation</p>
+            <h2>Generate And Test</h2>
+          </div>
+          <span class="panel-chip">Creative workflow</span>
         </div>
 
         {% if message %}
@@ -112,8 +140,11 @@
 
       <section class="glass-panel control-panel inspector-panel">
         <div class="panel-topline">
-          <p class="kicker">Read Only</p>
-          <h2>Google Form Inspector</h2>
+          <div>
+            <p class="kicker">Read Only</p>
+            <h2>Google Form Inspector</h2>
+          </div>
+          <span class="panel-chip panel-chip-gold">Signal scan</span>
         </div>
 
         {% if google_message %}
@@ -152,8 +183,11 @@
     <section class="results-grid">
       <section class="glass-panel result-panel">
         <div class="panel-topline">
-          <p class="kicker">Results</p>
-          <h2>Main Workflow</h2>
+          <div>
+            <p class="kicker">Results</p>
+            <h2>Main Workflow</h2>
+          </div>
+          <span class="panel-chip">Output dock</span>
         </div>
 
         {% if stats %}
@@ -200,8 +234,11 @@
 
       <section class="glass-panel result-panel result-panel-accent">
         <div class="panel-topline">
-          <p class="kicker">Inspector</p>
-          <h2>Google Form Analysis</h2>
+          <div>
+            <p class="kicker">Inspector</p>
+            <h2>Google Form Analysis</h2>
+          </div>
+          <span class="panel-chip panel-chip-gold">Structure view</span>
         </div>
 
         {% if google_stats %}
@@ -243,7 +280,7 @@
           <p class="kicker">Audit</p>
           <h2>Recent Activity</h2>
         </div>
-        <p class="activity-subtitle">A running trail of who opened the dashboard, inspected forms, generated responses, and downloaded exports.</p>
+        <p class="activity-subtitle">A live stream of who opened the dashboard, inspected forms, generated responses, and pulled exports from the dock.</p>
       </div>
 
       {% if recent_activity %}
