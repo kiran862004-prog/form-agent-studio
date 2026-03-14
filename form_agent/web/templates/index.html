@@ -7,58 +7,80 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
 </head>
 <body>
+  <div class="page-glow glow-one"></div>
+  <div class="page-glow glow-two"></div>
+
   <main class="shell">
-    <section class="hero">
-      <div>
-        <p class="eyebrow">Standalone Web Console</p>
+    <section class="masthead">
+      <div class="masthead-copy glass-panel hero-panel">
+        <p class="kicker">Field Research Console</p>
         <h1>Form Agent Studio</h1>
-        <p class="lede">A separate web UI for schema capture, synthetic response generation, export workflows, and read-only Google Form analysis for forms you own or are authorized to test.</p>
-        <div class="meta-strip">
-          <span>Listening on {{ network_host }}:{{ network_port }}</span>
-          {% if auth_enabled %}<span>Basic auth enabled</span>{% else %}<span>Basic auth disabled</span>{% endif %}
+        <p class="lede">An expressive web cockpit for schema capture, synthetic respondent generation, export workflows, and read-only Google Form inspection for forms you own or are authorized to test.</p>
+
+        <div class="status-row">
+          <span class="status-pill">Listening on {{ network_host }}:{{ network_port }}</span>
+          {% if auth_enabled %}
+            <span class="status-pill secure">Auth shield active</span>
+          {% else %}
+            <span class="status-pill warning">Auth disabled</span>
+          {% endif %}
         </div>
-        <div class="help-banner">
+
+        <div class="hero-note">
           <strong>External access help</strong>
-          <p>Use the username and password provided by the owner, then start with the read-only inspector if you only need schema details. Download buttons appear after an analysis or generation run completes.</p>
+          <p>Use the credentials shared by the owner, start with the read-only inspector if you only need structure, and pull exports from the download dock once a run completes.</p>
         </div>
       </div>
-      <div class="hero-card">
-        <span>Local demo</span>
-        <a href="{{ demo_url }}">{{ demo_url }}</a>
-        <p>Exports are written into <code>{{ output_dir }}</code>.</p>
-      </div>
+
+      <aside class="glass-panel side-panel">
+        <div class="side-block">
+          <span class="mini-label">Local demo</span>
+          <a class="demo-link" href="{{ demo_url }}">{{ demo_url }}</a>
+        </div>
+
+        <div class="side-block">
+          <span class="mini-label">Output vault</span>
+          <p><code>{{ output_dir }}</code></p>
+        </div>
+
+        <div class="side-block stat-orbit">
+          <span class="mini-label">Quick read</span>
+          <div class="orbit-core">Studio</div>
+          <p>Research, inspect, export, and audit from one place.</p>
+        </div>
+      </aside>
     </section>
 
-    <section class="dashboard">
-      <section class="panel controls">
-        <div class="panel-head">
-          <p class="eyebrow">Automation</p>
+    <section class="workspace-grid">
+      <section class="glass-panel control-panel main-control">
+        <div class="panel-topline">
+          <p class="kicker">Automation</p>
           <h2>Generate And Test</h2>
         </div>
 
         {% if message %}
-          <div class="callout">{{ message }}</div>
+          <div class="banner banner-success">{{ message }}</div>
         {% endif %}
         {% if error %}
-          <div class="callout error">{{ error }}</div>
+          <div class="banner banner-error">{{ error }}</div>
         {% endif %}
 
-        <form method="post" class="stack">
+        <form method="post" class="control-stack">
           <input type="hidden" name="google_url" value="{{ values.google_url }}" />
           <input type="hidden" name="google_headed" value="{% if values.google_headed %}on{% endif %}" />
 
           <label>
-            Form URL
+            <span>Form URL</span>
             <input type="text" name="url" value="{{ values.url }}" />
           </label>
 
-          <div class="row">
+          <div class="pair-grid">
             <label>
-              Responses
+              <span>Responses</span>
               <input type="number" min="1" max="1000" name="count" value="{{ values.count }}" />
             </label>
             <label>
-              Strategy
+              <span>Strategy</span>
               <select name="strategy">
                 {% for item in ["random", "weighted", "ai"] %}
                   <option value="{{ item }}" {% if values.strategy == item %}selected{% endif %}>{{ item }}</option>
@@ -68,40 +90,40 @@
           </div>
 
           <label>
-            Config Path
+            <span>Config Path</span>
             <input type="text" name="config_path" value="{{ values.config_path }}" />
           </label>
 
-          <div class="toggle-grid">
-            <label class="toggle"><input type="checkbox" name="submit" {% if values.submit %}checked{% endif %} />Submit responses</label>
-            <label class="toggle"><input type="checkbox" name="confirm_owned_form" {% if values.confirm_owned_form %}checked{% endif %} />I am authorized</label>
-            <label class="toggle"><input type="checkbox" name="headed" {% if values.headed %}checked{% endif %} />Show browser</label>
-            <label class="toggle"><input type="checkbox" name="export_json" {% if values.export_json %}checked{% endif %} />JSON export</label>
-            <label class="toggle"><input type="checkbox" name="export_csv" {% if values.export_csv %}checked{% endif %} />CSV export</label>
-            <label class="toggle"><input type="checkbox" name="export_xlsx" {% if values.export_xlsx %}checked{% endif %} />XLSX export</label>
+          <div class="toggle-bank">
+            <label class="toggle-chip"><input type="checkbox" name="submit" {% if values.submit %}checked{% endif %} /><span>Submit responses</span></label>
+            <label class="toggle-chip"><input type="checkbox" name="confirm_owned_form" {% if values.confirm_owned_form %}checked{% endif %} /><span>I am authorized</span></label>
+            <label class="toggle-chip"><input type="checkbox" name="headed" {% if values.headed %}checked{% endif %} /><span>Show browser</span></label>
+            <label class="toggle-chip"><input type="checkbox" name="export_json" {% if values.export_json %}checked{% endif %} /><span>JSON export</span></label>
+            <label class="toggle-chip"><input type="checkbox" name="export_csv" {% if values.export_csv %}checked{% endif %} /><span>CSV export</span></label>
+            <label class="toggle-chip"><input type="checkbox" name="export_xlsx" {% if values.export_xlsx %}checked{% endif %} /><span>XLSX export</span></label>
           </div>
 
-          <div class="actions">
+          <div class="action-row">
             <button type="submit" name="action" value="analyze">Analyze Form</button>
-            <button type="submit" name="action" value="generate" class="secondary">Generate Workflow</button>
+            <button type="submit" name="action" value="generate" class="action-alt">Generate Workflow</button>
           </div>
         </form>
       </section>
 
-      <section class="panel controls alt">
-        <div class="panel-head">
-          <p class="eyebrow">Read Only</p>
+      <section class="glass-panel control-panel inspector-panel">
+        <div class="panel-topline">
+          <p class="kicker">Read Only</p>
           <h2>Google Form Inspector</h2>
         </div>
 
         {% if google_message %}
-          <div class="callout amber">{{ google_message }}</div>
+          <div class="banner banner-gold">{{ google_message }}</div>
         {% endif %}
         {% if google_error %}
-          <div class="callout error">{{ google_error }}</div>
+          <div class="banner banner-error">{{ google_error }}</div>
         {% endif %}
 
-        <form method="post" class="stack">
+        <form method="post" class="control-stack">
           <input type="hidden" name="url" value="{{ values.url }}" />
           <input type="hidden" name="count" value="{{ values.count }}" />
           <input type="hidden" name="strategy" value="{{ values.strategy }}" />
@@ -114,98 +136,126 @@
           {% if values.export_xlsx %}<input type="hidden" name="export_xlsx" value="on" />{% endif %}
 
           <label>
-            Google Form URL
+            <span>Google Form URL</span>
             <input type="text" name="google_url" value="{{ values.google_url }}" placeholder="https://docs.google.com/forms/d/e/.../viewform" />
           </label>
 
-          <label class="toggle"><input type="checkbox" name="google_headed" {% if values.google_headed %}checked{% endif %} />Show browser while analyzing</label>
+          <label class="toggle-chip single-toggle"><input type="checkbox" name="google_headed" {% if values.google_headed %}checked{% endif %} /><span>Show browser while analyzing</span></label>
 
-          <div class="actions">
-            <button type="submit" name="action" value="analyze_google" class="gold">Analyze Google Form</button>
+          <div class="action-row">
+            <button type="submit" name="action" value="analyze_google" class="action-gold">Analyze Google Form</button>
           </div>
         </form>
       </section>
     </section>
 
     <section class="results-grid">
-      <section class="panel results">
-        <div class="panel-head">
-          <p class="eyebrow">Results</p>
+      <section class="glass-panel result-panel">
+        <div class="panel-topline">
+          <p class="kicker">Results</p>
           <h2>Main Workflow</h2>
         </div>
+
         {% if stats %}
-          <div class="stats">
+          <div class="metric-grid">
             {% for stat in stats %}
-              <div class="stat"><strong>{{ stat.value }}</strong><span>{{ stat.label }}</span></div>
+              <div class="metric-card">
+                <strong>{{ stat.value }}</strong>
+                <span>{{ stat.label }}</span>
+              </div>
             {% endfor %}
           </div>
         {% endif %}
+
         {% if download_links.ui_schema_json or download_links.ui_responses_json or download_links.ui_responses_csv or download_links.ui_responses_xlsx or download_links.submission_errors_json or download_links.activity_log_jsonl %}
-          <div class="download-strip">
-            {% if download_links.ui_schema_json %}<a class="download-btn" href="{{ download_links.ui_schema_json }}">Download Schema JSON</a>{% endif %}
-            {% if download_links.ui_responses_json %}<a class="download-btn" href="{{ download_links.ui_responses_json }}">Download Responses JSON</a>{% endif %}
-            {% if download_links.ui_responses_csv %}<a class="download-btn" href="{{ download_links.ui_responses_csv }}">Download CSV</a>{% endif %}
-            {% if download_links.ui_responses_xlsx %}<a class="download-btn" href="{{ download_links.ui_responses_xlsx }}">Download XLSX</a>{% endif %}
-            {% if download_links.submission_errors_json %}<a class="download-btn danger" href="{{ download_links.submission_errors_json }}">Download Errors</a>{% endif %}
-            {% if download_links.activity_log_jsonl %}<a class="download-btn" href="{{ download_links.activity_log_jsonl }}">Download Activity Log</a>{% endif %}
+          <div class="download-dock">
+            {% if download_links.ui_schema_json %}<a class="dock-link" href="{{ download_links.ui_schema_json }}">Schema JSON</a>{% endif %}
+            {% if download_links.ui_responses_json %}<a class="dock-link" href="{{ download_links.ui_responses_json }}">Responses JSON</a>{% endif %}
+            {% if download_links.ui_responses_csv %}<a class="dock-link" href="{{ download_links.ui_responses_csv }}">CSV Export</a>{% endif %}
+            {% if download_links.ui_responses_xlsx %}<a class="dock-link" href="{{ download_links.ui_responses_xlsx }}">XLSX Export</a>{% endif %}
+            {% if download_links.submission_errors_json %}<a class="dock-link dock-danger" href="{{ download_links.submission_errors_json }}">Errors</a>{% endif %}
+            {% if download_links.activity_log_jsonl %}<a class="dock-link" href="{{ download_links.activity_log_jsonl }}">Activity Log</a>{% endif %}
           </div>
         {% endif %}
+
         {% if schema_json %}
-          <h3>Schema JSON</h3>
-          <pre>{{ schema_json }}</pre>
+          <div class="code-block">
+            <h3>Schema JSON</h3>
+            <pre>{{ schema_json }}</pre>
+          </div>
         {% endif %}
         {% if rows_json %}
-          <h3>Generated Responses</h3>
-          <pre>{{ rows_json }}</pre>
+          <div class="code-block">
+            <h3>Generated Responses</h3>
+            <pre>{{ rows_json }}</pre>
+          </div>
         {% endif %}
         {% if errors_json %}
-          <h3>Submission Errors</h3>
-          <pre>{{ errors_json }}</pre>
+          <div class="code-block">
+            <h3>Submission Errors</h3>
+            <pre>{{ errors_json }}</pre>
+          </div>
         {% endif %}
       </section>
 
-      <section class="panel results">
-        <div class="panel-head">
-          <p class="eyebrow">Inspector</p>
+      <section class="glass-panel result-panel result-panel-accent">
+        <div class="panel-topline">
+          <p class="kicker">Inspector</p>
           <h2>Google Form Analysis</h2>
         </div>
+
         {% if google_stats %}
-          <div class="stats">
+          <div class="metric-grid">
             {% for stat in google_stats %}
-              <div class="stat"><strong>{{ stat.value }}</strong><span>{{ stat.label }}</span></div>
+              <div class="metric-card metric-card-gold">
+                <strong>{{ stat.value }}</strong>
+                <span>{{ stat.label }}</span>
+              </div>
             {% endfor %}
           </div>
         {% endif %}
+
         {% if download_links.google_schema_json or download_links.google_schema_md %}
-          <div class="download-strip">
-            {% if download_links.google_schema_json %}<a class="download-btn gold" href="{{ download_links.google_schema_json }}">Download Google Schema JSON</a>{% endif %}
-            {% if download_links.google_schema_md %}<a class="download-btn gold" href="{{ download_links.google_schema_md }}">Download Markdown Summary</a>{% endif %}
+          <div class="download-dock">
+            {% if download_links.google_schema_json %}<a class="dock-link dock-gold" href="{{ download_links.google_schema_json }}">Google Schema</a>{% endif %}
+            {% if download_links.google_schema_md %}<a class="dock-link dock-gold" href="{{ download_links.google_schema_md }}">Markdown Summary</a>{% endif %}
           </div>
         {% endif %}
+
         {% if google_schema_json %}
-          <h3>Google Schema JSON</h3>
-          <pre>{{ google_schema_json }}</pre>
+          <div class="code-block">
+            <h3>Google Schema JSON</h3>
+            <pre>{{ google_schema_json }}</pre>
+          </div>
         {% endif %}
         {% if google_summary_text %}
-          <h3>Markdown Summary</h3>
-          <pre>{{ google_summary_text }}</pre>
+          <div class="code-block">
+            <h3>Markdown Summary</h3>
+            <pre>{{ google_summary_text }}</pre>
+          </div>
         {% endif %}
       </section>
     </section>
 
-    <section class="panel activity-panel">
-      <div class="panel-head">
-        <p class="eyebrow">Audit</p>
-        <h2>Recent Activity</h2>
+    <section class="glass-panel activity-panel">
+      <div class="panel-topline activity-head">
+        <div>
+          <p class="kicker">Audit</p>
+          <h2>Recent Activity</h2>
+        </div>
+        <p class="activity-subtitle">A running trail of who opened the dashboard, inspected forms, generated responses, and downloaded exports.</p>
       </div>
+
       {% if recent_activity %}
-        <div class="activity-list">
+        <div class="activity-grid">
           {% for event in recent_activity %}
-            <article class="activity-item">
-              <strong>{{ event.action }}</strong>
-              <span>{{ event.timestamp }}</span>
-              <span>{{ event.username }} @ {{ event.ip }}</span>
-              <span>{{ event.details }}</span>
+            <article class="activity-card">
+              <div class="activity-card-top">
+                <strong>{{ event.action }}</strong>
+                <span>{{ event.timestamp }}</span>
+              </div>
+              <p>{{ event.username }} @ {{ event.ip }}</p>
+              <code>{{ event.details }}</code>
             </article>
           {% endfor %}
         </div>
