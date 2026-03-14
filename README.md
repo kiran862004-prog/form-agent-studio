@@ -27,35 +27,31 @@ The repo is now prepared for hosted deployment with:
 
 The Docker image uses Microsoft's Playwright Python base image, which is much more reliable for browser automation in hosting environments.
 
-## Best Option
+## Production Hardening
 
-For "fully on web without terminals open", the best option is a cloud host such as Render or Railway.
+The app now includes:
 
-Why this is better than a local tunnel:
+- a public `GET /health` endpoint that returns JSON status
+- security headers on responses
+- stricter cache behavior for authenticated pages
+- activity logging for dashboard views, analyses, generations, submissions, downloads, and errors
 
-- no PC needs to stay on
-- no local terminal needs to stay open
-- public URL stays up independently
-- easier to manage auth and redeploys
-
-## Docker Deployment
-
-Build locally:
-
-```powershell
-docker build -t form-agent-studio .
-```
-
-Run locally:
-
-```powershell
-docker run -p 8000:8000 -e FORM_AGENT_USERNAME=admin -e FORM_AGENT_PASSWORD=change-me-now form-agent-studio
-```
-
-The container starts with:
+Health endpoint example:
 
 ```text
-gunicorn --bind 0.0.0.0:8000 wsgi:app
+https://your-service.example.com/health
+```
+
+Expected response shape:
+
+```json
+{
+  "status": "ok",
+  "service": "form-agent-studio",
+  "timestamp": "2026-03-14T00:00:00+00:00",
+  "auth_enabled": true,
+  "output_dir": "/app/output"
+}
 ```
 
 ## Render Deployment
@@ -77,6 +73,13 @@ OPENAI_MODEL=gpt-4.1-mini
 ```
 
 Render will build from the Dockerfile and expose the service with a public URL.
+
+After redeploy, verify:
+
+1. `https://your-service.onrender.com/health` returns `status: ok`
+2. the main UI still loads behind auth
+3. the help banner and recent activity panel are visible
+4. activity log download still works
 
 ## Railway Deployment
 
@@ -104,15 +107,6 @@ Railway will build and run the Docker image, then give you a public domain.
 - Default host binding is now `0.0.0.0` for deployment friendliness.
 - Activity logs are written to `output/activity_log.jsonl`; on ephemeral platforms this is best treated as temporary runtime storage unless you later add object storage or a database.
 
-## Sources
-
-- [Render Flask quickstart](https://render.com/docs/deploy-flask)
-- [Render web services docs](https://render.com/docs/web-services)
-- [Railway Flask guide](https://docs.railway.com/guides/flask)
-- [Cloudflare Tunnel setup](https://developers.cloudflare.com/tunnel/setup/)
-- [Cloudflare named tunnel config](https://developers.cloudflare.com/tunnel/advanced/local-management/create-local-tunnel/)
-- [Cloudflare run as a Windows service](https://developers.cloudflare.com/tunnel/advanced/local-management/as-a-service/windows/)
-
 ## Recommended Next Step
 
-If you want the smoothest deployment path from here, Render is the simplest first target and Railway is a solid second option.
+After pushing these changes, redeploy Render and verify `/health`. Then the next worthwhile upgrade is stronger auth or persistent storage for logs.

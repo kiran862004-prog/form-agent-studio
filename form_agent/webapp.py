@@ -9,7 +9,7 @@ from functools import wraps
 from pathlib import Path
 from typing import Any
 
-from flask import Flask, Response, abort, render_template, request, send_file, url_for
+from flask import Flask, Response, abort, jsonify, render_template, request, send_file, url_for
 
 from .analyzer import analyze_form, save_schema, save_schema_markdown
 from .config import load_config
@@ -46,6 +46,18 @@ DOWNLOAD_FILES = {
 
 
 app = Flask(__name__, template_folder=str(TEMPLATE_DIR), static_folder=str(STATIC_DIR))
+
+
+@app.after_request
+def add_security_headers(response: Response) -> Response:
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    response.headers["Cache-Control"] = "no-store"
+    if request.is_secure or request.headers.get("X-Forwarded-Proto", "").lower() == "https":
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
 
 
 def _requires_auth() -> bool:
@@ -162,6 +174,19 @@ def _base_context() -> dict[str, Any]:
         "auth_enabled": _requires_auth(),
         "recent_activity": _recent_activity(),
     }
+
+
+@app.route("/health", methods=["GET"])
+def health() -> Response:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "status": "ok",
+        "service": "form-agent-studio",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "auth_enabled": _requires_auth(),
+        "output_dir": str(OUTPUT_DIR),
+    }
+    return jsonify(payload)
 
 
 @app.route("/", methods=["GET", "POST"])
