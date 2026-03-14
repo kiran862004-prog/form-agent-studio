@@ -1,0 +1,7 @@
+playwright>=1.53.0
+beautifulsoup4>=4.12.3
+pandas>=2.2.3
+openpyxl>=3.1.5
+openai>=1.76.0
+flask>=3.1.0
+gunicorn>=23.0.0

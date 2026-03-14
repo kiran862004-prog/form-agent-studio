@@ -1,0 +1,24 @@
+{
+  "fixed_answers": {
+    "Country": "India"
+  },
+  "weights": {
+    "How satisfied are you?": {
+      "Very satisfied": 0.5,
+      "Satisfied": 0.3,
+      "Neutral": 0.15,
+      "Dissatisfied": 0.05
+    }
+  },
+  "demographic_profile": {
+    "region": "Bengaluru",
+    "age_range": "25-34",
+    "occupation": "Software Engineer"
+  },
+  "randomization_level": 0.65,
+  "exports": {
+    "json": "output/responses.json",
+    "csv": "output/responses.csv",
+    "xlsx": "output/responses.xlsx"
+  }
+}

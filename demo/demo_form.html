@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Agent Demo Survey</title>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --card: #fffaf2;
+      --ink: #1e2a2f;
+      --muted: #56656b;
+      --accent: #b45309;
+      --line: #dfd2bd;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(180, 83, 9, 0.12), transparent 28%),
+        linear-gradient(180deg, #f4ecde 0%, var(--bg) 100%);
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 20px 50px rgba(30, 42, 47, 0.08);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 28px 28px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    form {
+      padding: 24px 28px 32px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .question {
+      display: grid;
+      gap: 10px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    label, legend {
+      font-weight: 700;
+    }
+
+    .required::after {
+      content: " *";
+      color: #b91c1c;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #cdbda2;
+      border-radius: 10px;
+      background: #fffdf8;
+      font: inherit;
+    }
+
+    .option-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .option-list label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 400;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 18px;
+      background: var(--accent);
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Demo Survey</h1>
+      <p>A safe local form for testing the automation agent end to end.</p>
+    </section>
+
+    <form action="./thank_you.html" method="get">
+      <div class="question">
+        <label for="full_name" class="required">Full Name</label>
+        <input id="full_name" name="full_name" type="text" placeholder="Enter your name" required />
+      </div>
+
+      <div class="question">
+        <label for="email" class="required">Email</label>
+        <input id="email" name="email" type="email" placeholder="name@example.com" required />
+      </div>
+
+      <fieldset class="question">
+        <legend class="required">How satisfied are you?</legend>
+        <div class="option-list">
+          <label for="sat_1"><input id="sat_1" name="satisfaction" type="radio" value="Very satisfied" required />Very satisfied</label>
+          <label for="sat_2"><input id="sat_2" name="satisfaction" type="radio" value="Satisfied" />Satisfied</label>
+          <label for="sat_3"><input id="sat_3" name="satisfaction" type="radio" value="Neutral" />Neutral</label>
+          <label for="sat_4"><input id="sat_4" name="satisfaction" type="radio" value="Dissatisfied" />Dissatisfied</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="question">
+        <legend>Which features matter most?</legend>
+        <div class="option-list">
+          <label for="feat_1"><input id="feat_1" name="features" type="checkbox" value="Speed" />Speed</label>
+          <label for="feat_2"><input id="feat_2" name="features" type="checkbox" value="Price" />Price</label>
+          <label for="feat_3"><input id="feat_3" name="features" type="checkbox" value="Design" />Design</label>
+          <label for="feat_4"><input id="feat_4" name="features" type="checkbox" value="Support" />Support</label>
+        </div>
+      </fieldset>
+
+      <div class="question">
+        <label for="country" class="required">Country</label>
+        <select id="country" name="country" required>
+          <option value="">Choose one</option>
+          <option>India</option>
+          <option>United States</option>
+          <option>Germany</option>
+          <option>Japan</option>
+        </select>
+      </div>
+
+      <div class="question">
+        <label for="feedback">Additional Feedback</label>
+        <textarea id="feedback" name="feedback" rows="5" placeholder="Share any extra thoughts"></textarea>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+  </main>
+</body>
+</html>
